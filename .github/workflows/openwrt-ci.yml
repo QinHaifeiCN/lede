@@ -87,7 +87,7 @@ jobs:
           # 无论你想要对固件进行怎样的定制, 都需要且只需要修改 EOF 回环内的内容.
           # 
           # 编译x64固件:
-            cat >> ./.config <<EOF
+          cat >> .config <<EOF
             CONFIG_TARGET_x86=y
             CONFIG_TARGET_x86_64=y
             CONFIG_TARGET_x86_64_Generic=y
@@ -148,17 +148,17 @@ jobs:
           # cat >> .config <<EOF
           # # CONFIG_TARGET_IMAGES_PAD is not set
           # # CONFIG_VMDK_IMAGES is not set
-            EOF
+          EOF
           # 
           # ========================固件定制部分结束========================
           # 
-          #sed -i 's/^[ \t]*//g' ./.config
+          sed -i 's/^[ \t]*//g' ./.config
           make defconfig
       - name: Make download
         run: |
           make download -j8
-          #find ./dl/ -size -1024c -exec rm -f {} \;
-          #df -h
+          find ./dl/ -size -1024c -exec rm -f {} \;
+          df -h
       - name: Compile firmware
         run: |
           make -j$(nproc) || make -j1 V=s
